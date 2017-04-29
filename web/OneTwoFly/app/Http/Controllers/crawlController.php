@@ -12,7 +12,8 @@ class crawlController extends Controller
         return '111111';
     }
 
-    public function weather(){
+    public function weather(Request $request){
+        var_dump($request->input('flight'));
         return '';
     }
 
