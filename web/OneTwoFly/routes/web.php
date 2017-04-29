@@ -19,9 +19,9 @@ Route::get('/php', function () {
     return phpinfo();
 });
 
-Route::get('/flight', 'crawlController@index');
+Route::get('/flight', 'crawlController@flight');
 
-Route::post('/weather', 'crawlController@weather');
+Route::get('/weather', 'crawlController@weather');
 
 Route::resource('/testing', 'firstController');
 
