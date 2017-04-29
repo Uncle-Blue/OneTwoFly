@@ -19,4 +19,6 @@ Route::get('/php', function () {
     return phpinfo();
 });
 
+Route::resource('/testing', 'firstController');
+
 Route::resource('/foo', 'firstController');

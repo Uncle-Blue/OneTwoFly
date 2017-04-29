@@ -24,7 +24,7 @@ class firstController extends Controller
         // get the weather.
         $params = array("airport" => "KAUS");
         $result = $client->Metar($params);
-        print_r($result);
+        var_dump($result);
 
     }
 
@@ -35,7 +35,7 @@ class firstController extends Controller
      */
     public function create()
     {
-        //
+        return "successssss";
     }
 
     /**
@@ -46,7 +46,7 @@ class firstController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return "successssss";
     }
 
     /**
@@ -57,7 +57,7 @@ class firstController extends Controller
      */
     public function show($id)
     {
-        //
+        return "successssss";
     }
 
     /**
@@ -68,7 +68,7 @@ class firstController extends Controller
      */
     public function edit($id)
     {
-        //
+        return "successssss";
     }
 
     /**
@@ -80,7 +80,7 @@ class firstController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return "successssss";
     }
 
     /**
@@ -91,6 +91,6 @@ class firstController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return "successssss";
     }
 }
