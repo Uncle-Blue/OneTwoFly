@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.uncle_blue.nasa_hackthon.onetwofly"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // for DexIndexOverflowException problem
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:24.0.0'
+    compile 'com.google.android.gms:play-services:9.8.0'
+
+    // for github 3rd part library
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.parse.bolts:bolts-tasks:1.4.0'
+    compile 'com.parse.bolts:bolts-applinks:1.4.0'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.clans:fab:1.6.4'
+
+    // for DexIndexOverflowException problem
+    compile 'com.android.support:multidex:1.0.0'
+
+    testCompile 'junit:junit:4.12'
+}

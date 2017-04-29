@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/system_color">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/layout_maps_activity_toolbar_title"
+                    android:textSize="@dimen/textSize_title"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color"
+                    android:layout_gravity="center"
+                    android:id="@+id/toolbarTitleTV"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/rankSpinnerLL"
+                    android:visibility="gone">
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/spinner_style"
+                        android:id="@+id/rankClassifySpinner">
+                    </Spinner>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/layout_content_rank_tv"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/textSize_title"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+      <!--Google map-->
+      <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        tools:context="com.uncle_blue.nasa_hackthon.onetwofly.MapsActivity"/>
+        <!--
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_gravity="end"
+                    app:borderWidth="0dp"
+                    android:src="@drawable/places_ic_search" />
+        -->
+
+        <!--<android.support.design.widget.TabLayout-->
+            <!--android:id="@+id/tabs"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:tabTextAppearance="@style/MyTabTextStyle"-->
+            <!--app:tabTextColor="@android:color/white"-->
+            <!--app:tabSelectedTextColor="@android:color/black"-->
+            <!--app:tabBackground="@color/system_color"-->
+            <!--app:tabGravity="fill"-->
+            <!--app:tabMode="fixed"/>-->
+        <!--  app:tabSelectedTextColor="@android:color/holo_red_light" -->
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionMenu
+      android:id="@+id/fab_menu"
+      android:layout_width="@dimen/button_size_normal"
+      android:layout_height="@dimen/button_size_normal"
+      android:layout_margin="@dimen/fab_button_margin"
+      android:layout_gravity="bottom|right"
+      android:focusable="true">
+      <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_flight_takeoff_white_24dp"
+        android:focusable="true"
+        app:fab_size="normal" />
+      <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_flight_takeoff_white_24dp"
+        android:focusable="true"
+        app:fab_size="normal"/>
+      <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_flight_takeoff_white_24dp"
+        android:focusable="true"
+        app:fab_size="normal"/>
+
+
+    </com.github.clans.fab.FloatingActionMenu>
+</android.support.design.widget.CoordinatorLayout>

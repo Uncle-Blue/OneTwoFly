@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <group
+        android:checkableBehavior="single"
+        android:title="Home items">
+
+        <item
+            android:id="@+id/system_accountInfo"
+            android:icon="@drawable/my_account"
+            android:title="@string/layout_navi_menu_item_account"/>
+        <item
+            android:id="@+id/system_total_bookmarks"
+            android:title="@string/layout_navi_menu_item_favorite"/>
+<!--
+        <item
+            android:id="@+id/nav_timebar"
+            android:icon="@drawable/ic_account_balance_black_24dp"
+            android:title="時間軸" />
+-->
+    </group>
+
+    <item android:title="About System">
+        <menu>
+            <item
+                android:id="@+id/system_store"
+                android:title="@string/layout_navi_menu_item_store"/>
+            <item
+                android:id="@+id/system_myTheme"
+                android:title="@string/layout_navi_menu_item_theme"/>
+            <item
+                android:id="@+id/system_myWallet"
+                android:title="@string/layout_navi_menu_item_wallet"/>
+            <item
+                android:id="@+id/system_settings"
+                android:title="@string/layout_navi_menu_item_setting"/>
+            <item
+                android:id="@+id/system_logout"
+                android:title="@string/layout_navi_menu_item_logout"/>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <!--形状-->
+        <shape>
+            <!--填充颜色-->
+            <solid android:color="#d0d0d0"></solid>
+            <!--描边-->
+            <stroke android:width="0.8dp" android:color="#898989"></stroke>
+            <!--paddint-->
+            <padding android:left="5dp" android:right="5dp" android:top="0dp" android:bottom="0dp"></padding>
+            <!--圆角-->
+            <corners android:radius="5dp"/>
+        </shape>
+    </item>
+</selector>

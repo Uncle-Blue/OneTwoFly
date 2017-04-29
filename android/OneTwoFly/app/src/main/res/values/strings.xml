@@ -1,0 +1,19 @@
+<resources>
+  <string name="app_name">OneTwoFly</string>
+  <string name="main_activity_title">OneTwoFly</string>
+
+  <string name="layout_maps_activity_toolbar_title">@string/app_name</string>
+
+  <!-- for DrawerLayout -->
+  <string name="layout_navi_menu_item_account">帳號資訊</string>
+  <string name="layout_navi_menu_item_favorite">我的收藏</string>
+  <string name="layout_navi_menu_item_feature">介紹</string>
+  <string name="layout_navi_menu_item_store">商店</string>
+  <string name="layout_navi_menu_item_theme">我的主題</string>
+  <string name="layout_navi_menu_item_wallet">我的錢包</string>
+  <string name="layout_navi_menu_item_setting">設定</string>
+  <string name="layout_navi_menu_item_developer">製作團隊</string>
+  <string name="layout_navi_menu_item_logout">登出</string>
+
+  <string name="layout_content_rank_tv">排行榜</string>
+</resources>
