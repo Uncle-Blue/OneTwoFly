@@ -13,18 +13,6 @@ class firstController extends Controller
      */
     public function index()
     {
-        $options = array(
-                     'trace' => true,
-                     'exceptions' => 0,
-                     'login' => 'sapc87952',
-                     'password' => 'ad6edc63c0df3606653774e2628f9b81562931da',
-                );
-        $client = new \SoapClient('http://flightxml.flightaware.com/soap/FlightXML2/wsdl', $options);
-
-        // get the weather.
-        $params = array("airport" => "KAUS");
-        $result = $client->Metar($params);
-        var_dump($result);
 
     }
 

@@ -22,7 +22,3 @@ Route::get('/php', function () {
 Route::get('/flight', 'crawlController@flight');
 
 Route::get('/weather', 'crawlController@weather');
-
-Route::resource('/testing', 'firstController');
-
-Route::resource('/foo', 'firstController');
