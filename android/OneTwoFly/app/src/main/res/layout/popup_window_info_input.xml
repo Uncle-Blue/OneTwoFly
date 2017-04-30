@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_vertical_margin"
+    android:background="@drawable/color_white_with_stroke_7radius">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:background="@drawable/color_system_color_top7radius"
+        android:gravity="center"
+        android:textSize="@dimen/textSize_title"
+        android:text="Flight Number" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:textSize="@dimen/textSize_content"
+        android:text="Please enter your flight number."/>
+    <EditText
+        android:id="@+id/pW_flightNumET"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:maxLines="1"
+        android:inputType="textCapCharacters"
+        android:gravity="center"
+        android:textSize="@dimen/textSize_content"
+        android:background="@drawable/user_title_tag"
+        android:hint="Flight number"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_vertical_margin"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/pW_cancelBtn"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/button_system_color"
+            android:textSize="@dimen/textSize_small"
+            android:textColor="@color/white"
+            android:text="cancel"/>
+        <Button
+            android:id="@+id/pW_SubmitBtn"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:background="@drawable/button_system_color"
+            android:textSize="@dimen/textSize_small"
+            android:textColor="@color/white"
+            android:text="submit"/>
+    </LinearLayout>
+</LinearLayout>

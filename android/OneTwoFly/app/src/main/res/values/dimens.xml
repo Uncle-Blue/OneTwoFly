@@ -7,7 +7,7 @@
   <dimen name="textSize_content">16sp</dimen>
   <dimen name="textSize_title">18sp</dimen>
   <dimen name="textSize_big">24sp</dimen>
-  <dimen name="textSize_price">12sp</dimen>
+  <dimen name="textSize_small">12sp</dimen>
 
   <dimen name="dots_height">30dp</dimen>
   <dimen name="dots_margin_bottom">20dp</dimen>

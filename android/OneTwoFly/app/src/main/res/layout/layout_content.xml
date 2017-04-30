@@ -97,14 +97,14 @@
         android:id="@+id/fab_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_flight_takeoff_white_24dp"
+        android:src="@drawable/ic_face_white_36dp"
         android:focusable="true"
         app:fab_size="normal" />
       <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_flight_takeoff_white_24dp"
+        android:src="@drawable/ic_language_white_36dp"
         android:focusable="true"
         app:fab_size="normal"/>
       <com.github.clans.fab.FloatingActionButton
