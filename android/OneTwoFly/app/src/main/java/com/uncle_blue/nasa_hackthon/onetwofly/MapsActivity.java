@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -73,6 +74,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private Toolbar toolbar;    //頂部按鈕條
     private DrawerLayout drawerLayout;  //左側選單
+    private NavigationView navigationView;
     private FloatingActionMenu fam; //漂浮按鈕選單
     private LinearLayout loadingPage, inputPage;
     private View infoInputView;
@@ -150,7 +152,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //      toolbar.setTitleMarginStart(250);
         // toolbar.setSubtitle("可以有副標喔~~");
         // toolbar.setLogo(R.drawable.ic_account_balance_black_24dp);
-        toolbar.setNavigationIcon(R.drawable.ic_list_black_24dp);
+        BitmapDrawable bD = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_list_black_24dp, getTheme());
+        Bitmap b = Bitmap.createScaledBitmap(bD.getBitmap(), width_44dp, width_44dp, false);
+        toolbar.setNavigationIcon(new BitmapDrawable(getResources(), b));
     }
 
     private void initDrawerLayout() {
@@ -174,6 +178,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onAnimationRepeat(Animator animation) {}
         });
         mStartPageAnimView.playAnimation();
+
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");;
+        //取得當前手機系統時間
+        Date currentDate = new Date(System.currentTimeMillis());
+        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.titleTV)).setText(dateFormat.format(currentDate));
 
     }
 

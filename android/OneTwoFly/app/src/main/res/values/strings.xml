@@ -1,6 +1,6 @@
 <resources>
-  <string name="app_name">OneTwoFly</string>
-  <string name="main_activity_title">OneTwoFly</string>
+  <string name="app_name">One Two Fly</string>
+  <string name="main_activity_title">One Two Fly</string>
 
   <string name="layout_maps_activity_toolbar_title">@string/app_name</string>
 
