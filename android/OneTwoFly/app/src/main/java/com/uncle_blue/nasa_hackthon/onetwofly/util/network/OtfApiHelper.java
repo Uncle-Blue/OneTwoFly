@@ -34,12 +34,12 @@ public class OtfApiHelper {
             = MediaType.parse("application/json; charset=utf-8");
 
     private static OkHttpClient mClient = new OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .build();
 
-    public static Response GET(String url ) throws IOException {
+    public static Response GET(String url) throws IOException {
         okhttp3.Request request = new okhttp3.Request.Builder().url(url)
                 .build();
         //will get IOException when there is no internet
@@ -56,13 +56,13 @@ public class OtfApiHelper {
         Response response = null;
         try {
             response = mClient.newCall(request).execute();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e.getStackTrace());
         }
         return response;
     }
 
-    public static String getAqiStationRequestUrl(float latitude, float longtitude){
+    public static String getAqiStationRequestUrl(float latitude, float longtitude) {
         return new StringBuffer(URL_AQI_STATION_SERVER)
                 .append("latlng=" + String.valueOf(latitude - 1))
                 .append("," + String.valueOf(longtitude - 1))
@@ -78,8 +78,7 @@ public class OtfApiHelper {
         JSONObject obj = new JSONObject(rawData);
         JSONArray dataSet = obj.getJSONArray("data");
 
-        for (int i = 0; i < dataSet.length(); i++)
-        {
+        for (int i = 0; i < dataSet.length(); i++) {
             try {
                 double latitude = dataSet.getJSONObject(i).getDouble("lat");
                 double longtitude = dataSet.getJSONObject(i).getDouble("lon");
@@ -88,13 +87,13 @@ public class OtfApiHelper {
                 // FIXME: workaround for unknown data value.
                 String aqiStr = dataSet.getJSONObject(i).getString("aqi");
                 int aqi = -1;
-                if(!"-".equals(aqiStr)){
+                if (!"-".equals(aqiStr)) {
                     aqi = Integer.parseInt(aqiStr);
                 }
 
                 AqiStation aqiStation = new AqiStation(latitude, longtitude, uid, aqi);
                 stations.add(aqiStation);
-            }catch (Exception e){
+            } catch (Exception e) {
                 String string = e.getMessage();
             }
         }

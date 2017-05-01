@@ -161,6 +161,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //初始化左側選單與內容
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+
+
         mStartPageAnimView = (LottieAnimationView) findViewById(R.id.start_page_LAV);
         mStartPageAnimView.setSpeed(1.2f);
         mStartPageAnimView.addAnimatorListener(new Animator.AnimatorListener() {

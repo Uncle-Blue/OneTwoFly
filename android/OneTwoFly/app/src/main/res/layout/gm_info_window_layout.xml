@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="8dp">
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/infoWindowCIV"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:scaleType="centerCrop"
             android:layerType="software"
+            android:scaleType="centerCrop"
             android:src="@drawable/sticker_huge" />
+
         <TextView
             android:id="@+id/titleTV"
             android:layout_width="wrap_content"
@@ -26,8 +29,9 @@
             android:paddingRight="8dp"
             android:text="顯示標題"
             android:textColor="#2196da"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/contentTV"
         android:layout_width="wrap_content"
@@ -35,5 +39,5 @@
         android:layout_gravity="center"
         android:gravity="left"
         android:text="顯示內容"
-        android:textSize="14sp"/>
+        android:textSize="14sp" />
 </LinearLayout>
