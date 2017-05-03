@@ -4,16 +4,15 @@
     android:layout_height="match_parent">
 
     <group
-        android:checkableBehavior="single"
-        android:title="Home items">
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/system_accountInfo"
             android:icon="@drawable/my_account"
-            android:title="@string/layout_navi_menu_item_account"/>
+            android:title="Created by Uncle Blue"/>
         <item
             android:id="@+id/system_total_bookmarks"
-            android:title="@string/layout_navi_menu_item_favorite"/>
+            android:title="at 2017 Nasa Hackthon"/>
 <!--
         <item
             android:id="@+id/nav_timebar"
@@ -22,23 +21,27 @@
 -->
     </group>
 
-    <item android:title="About System">
+    <item android:title="Team Members">
         <menu>
             <item
                 android:id="@+id/system_store"
-                android:title="@string/layout_navi_menu_item_store"/>
+                android:icon="@drawable/team"
+                android:title="Jack Huang"/>
             <item
                 android:id="@+id/system_myTheme"
-                android:title="@string/layout_navi_menu_item_theme"/>
+                android:icon="@drawable/team"
+                android:title="Ben Huang"/>
             <item
                 android:id="@+id/system_myWallet"
-                android:title="@string/layout_navi_menu_item_wallet"/>
+                android:icon="@drawable/team"
+                android:title="Charles Hsieh"/>
             <item
                 android:id="@+id/system_settings"
-                android:title="@string/layout_navi_menu_item_setting"/>
-            <item
-                android:id="@+id/system_logout"
-                android:title="@string/layout_navi_menu_item_logout"/>
+                android:icon="@drawable/team"
+                android:title="Wesley Chen"/>
+            <!--<item-->
+                <!--android:id="@+id/system_logout"-->
+                <!--android:title="@string/layout_navi_menu_item_logout"/>-->
         </menu>
     </item>
 </menu>

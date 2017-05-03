@@ -4,43 +4,43 @@
     android:layout_height="140dp"
     android:layout_marginTop="40dp"
     android:gravity="center_vertical"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin">
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/drawerLayoutUserCIV"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layerType="software"
         android:scaleType="centerCrop"
-        android:src="@drawable/sticker_huge"
-        android:id="@+id/drawerLayoutUserCIV"/>
+        android:src="@drawable/logo" />
 
     <TextView
+        android:id="@+id/nameTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/drawerLayoutUserCIV"
         android:layout_marginLeft="24dp"
-        android:text="UserName"
-        android:textStyle="bold"
-        android:textSize="20sp"
+        android:layout_toRightOf="@+id/drawerLayoutUserCIV"
+        android:text="One Two Fly"
         android:textColor="@color/text_color_href"
-        android:id="@+id/nameTV"/>   <!--@@@@@@@之後連結資料庫的使用者名稱-->
+        android:textSize="20sp"
+        android:textStyle="bold" />   <!--@@@@@@@之後連結資料庫的使用者名稱-->
 
     <TextView
+        android:id="@+id/titleTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/nameTV"
         android:layout_below="@+id/nameTV"
         android:layout_marginTop="4dp"
-        android:paddingTop="4dp"
-        android:paddingRight="16dp"
+        android:background="@drawable/user_title_tag"
         android:paddingBottom="4dp"
         android:paddingLeft="16dp"
-        android:background="@drawable/user_title_tag"
-        android:text="Inforest菜鳥"
-        android:textSize="14sp"
+        android:paddingRight="16dp"
+        android:paddingTop="4dp"
+        android:text="2017/04/29"
         android:textColor="@color/text_color"
-        android:id="@+id/titleTV"/>   <!--@@@@@@@之後連結資料庫的使用者稱號-->
+        android:textSize="14sp" />   <!--@@@@@@@之後連結資料庫的使用者稱號-->
 </RelativeLayout>

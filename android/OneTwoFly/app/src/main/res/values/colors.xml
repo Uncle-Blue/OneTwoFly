@@ -1,105 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="material_primary_color">#3f51b5</color>
-  <color name="material_primary_color_dark">#303f9f</color>
-  <color name="white">#ffffff</color>
-  <color name="system_color">#39b8af</color>
-  <color name="system_color_light">#96ceb4</color>
-  <color name="system_color_light_transparent">#6696ceb4</color>
-  <color name="system_color_dark">#2e3037</color>
-  <color name="system_color_middle">#21938a</color>
-  <color name="system_bar_color">#b4c9c8c8</color>
-  <color name="system_bar_edit_color">#f99d56</color>
-  <color name="system_bar_edit_log">#f9af76</color>
-  <color name="system_background_gray">#50484848</color>
-  <color name="hint_color">#9c9c9c</color>
-  <color name="text_color">#2e3037</color>
-  <color name="text_color_myself">#e98233</color>
-  <color name="text_color_href">#1462fd</color>
-  <color name="text_color_advise">#39b8af</color>
-  <color name="transparent">#00000000</color>
+    <color name="material_primary_color">#3f51b5</color>
+    <color name="material_primary_color_dark">#303f9f</color>
+    <color name="white">#ffffff</color>
+    <color name="system_color">#39b8af</color>
+    <color name="system_color_light">#96ceb4</color>
+    <color name="system_color_light_transparent">#6696ceb4</color>
+    <color name="system_color_dark">#2e3037</color>
+    <color name="system_color_middle">#21938a</color>
+    <color name="system_bar_color">#b4c9c8c8</color>
+    <color name="system_bar_edit_color">#f99d56</color>
+    <color name="system_bar_edit_log">#f9af76</color>
+    <color name="system_background_gray">#50484848</color>
+    <color name="hint_color">#9c9c9c</color>
+    <color name="text_color">#2e3037</color>
+    <color name="text_color_myself">#e98233</color>
+    <color name="text_color_href">#1462fd</color>
+    <color name="text_color_advise">#39b8af</color>
+    <color name="transparent">#00000000</color>
 
 
-  <!--以下為導覽頁面使用-->
-  <color name="colorPrimary">#3F51B5</color>
-  <color name="colorPrimaryDark">#303F9F</color>
-  <color name="colorAccent">#FF4081</color>
-  <!-- Screens background color-->
-  <color name="bg_screen1">#20d2bb</color>
-  <color name="bg_screen2">#ff862a</color>
-  <color name="bg_screen3">#f64c73</color>
-  <color name="bg_screen4">#3395ff</color>
-  <color name="bg_screen5">#c873f4</color>
-  <!-- dots inactive colors -->
-  <color name="dot_dark_screen1">#14a895</color>
-  <color name="dot_dark_screen2">#d67933</color>
-  <color name="dot_dark_screen3">#d1395c</color>
-  <color name="dot_dark_screen4">#2278d4</color>
-  <color name="dot_dark_screen5">#a854d4</color>
-  <!-- dots active colors -->
-  <color name="dot_light_screen1">#8cf9eb</color>
-  <color name="dot_light_screen2">#ffb780</color>
-  <color name="dot_light_screen3">#f98da5</color>
-  <color name="dot_light_screen4">#93c6fd</color>
-  <color name="dot_light_screen5">#e4b5fc</color>
+    <!--以下為導覽頁面使用-->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- Screens background color-->
+    <color name="bg_screen1">#20d2bb</color>
+    <color name="bg_screen2">#ff862a</color>
+    <color name="bg_screen3">#f64c73</color>
+    <color name="bg_screen4">#3395ff</color>
+    <color name="bg_screen5">#c873f4</color>
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#14a895</color>
+    <color name="dot_dark_screen2">#d67933</color>
+    <color name="dot_dark_screen3">#d1395c</color>
+    <color name="dot_dark_screen4">#2278d4</color>
+    <color name="dot_dark_screen5">#a854d4</color>
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#8cf9eb</color>
+    <color name="dot_light_screen2">#ffb780</color>
+    <color name="dot_light_screen3">#f98da5</color>
+    <color name="dot_light_screen4">#93c6fd</color>
+    <color name="dot_light_screen5">#e4b5fc</color>
 
-  <array name="array_dot_active">
-    <item>@color/dot_light_screen1</item>
-    <item>@color/dot_light_screen2</item>
-    <item>@color/dot_light_screen3</item>
-    <item>@color/dot_light_screen4</item>
-    <item>@color/dot_light_screen5</item>
-  </array>
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+        <item>@color/dot_light_screen5</item>
+    </array>
 
-  <array name="array_dot_inactive">
-    <item>@color/dot_dark_screen1</item>
-    <item>@color/dot_dark_screen2</item>
-    <item>@color/dot_dark_screen3</item>
-    <item>@color/dot_dark_screen4</item>
-    <item>@color/dot_dark_screen5</item>
-  </array>
-
-
-
-  <!--以下為內裝配色使用-->
-  <color name="insideDecoration_desert_toolbar">#d9ad7c</color>
-  <color name="insideDecoration_desert_background">#fbefcc</color>
-  <color name="insideDecoration_desert_systemBar">#f9ccac</color>
-  <color name="insideDecoration_desert_voteOption">#e0876a</color>
-
-  <color name="insideDecoration_sky_toolbar">#87bdd8</color>
-  <color name="insideDecoration_sky_background">#b7d7e8</color>
-  <color name="insideDecoration_sky_systemBar">#bccad6</color>
-  <color name="insideDecoration_sky_voteOption">#667292</color>
-
-  <color name="insideDecoration_beach_toolbar">#96ceb4</color>
-  <color name="insideDecoration_beach_background">#ffeead</color>
-  <color name="insideDecoration_beach_systemBar">#b4c9c8c8</color>
-  <color name="insideDecoration_beach_voteOption">#ff6f69</color>
-
-  <color name="insideDecoration_shades_of_grey_toolbar">#555860</color>
-  <color name="insideDecoration_shades_of_grey_background">#bfc3ba</color>
-  <color name="insideDecoration_shades_of_grey_systemBar">#a9aca9</color>
-  <color name="insideDecoration_shades_of_grey_voteOption">#2a2b2e</color>
-
-  <color name="insideDecoration_mediterranean_toolbar">#499bf9</color>
-  <color name="insideDecoration_mediterranean_background">#ffffff</color>
-  <color name="insideDecoration_mediterranean_systemBar">#b2dfff</color>
-  <color name="insideDecoration_mediterranean_voteOption">#3075d2</color>
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen3</item>
+        <item>@color/dot_dark_screen4</item>
+        <item>@color/dot_dark_screen5</item>
+    </array>
 
 
-  <color name="insideDecoration_test3_toolbar">#273b09</color>
-  <color name="insideDecoration_test3_background">#8b9e2d</color>
-  <color name="insideDecoration_test3_systemBar">#f9eab8</color>
-  <color name="insideDecoration_test3_voteOption">#54442b</color>
+    <!--以下為內裝配色使用-->
+    <color name="insideDecoration_desert_toolbar">#d9ad7c</color>
+    <color name="insideDecoration_desert_background">#fbefcc</color>
+    <color name="insideDecoration_desert_systemBar">#f9ccac</color>
+    <color name="insideDecoration_desert_voteOption">#e0876a</color>
+
+    <color name="insideDecoration_sky_toolbar">#87bdd8</color>
+    <color name="insideDecoration_sky_background">#b7d7e8</color>
+    <color name="insideDecoration_sky_systemBar">#bccad6</color>
+    <color name="insideDecoration_sky_voteOption">#667292</color>
+
+    <color name="insideDecoration_beach_toolbar">#96ceb4</color>
+    <color name="insideDecoration_beach_background">#ffeead</color>
+    <color name="insideDecoration_beach_systemBar">#b4c9c8c8</color>
+    <color name="insideDecoration_beach_voteOption">#ff6f69</color>
+
+    <color name="insideDecoration_shades_of_grey_toolbar">#555860</color>
+    <color name="insideDecoration_shades_of_grey_background">#bfc3ba</color>
+    <color name="insideDecoration_shades_of_grey_systemBar">#a9aca9</color>
+    <color name="insideDecoration_shades_of_grey_voteOption">#2a2b2e</color>
+
+    <color name="insideDecoration_mediterranean_toolbar">#499bf9</color>
+    <color name="insideDecoration_mediterranean_background">#ffffff</color>
+    <color name="insideDecoration_mediterranean_systemBar">#b2dfff</color>
+    <color name="insideDecoration_mediterranean_voteOption">#3075d2</color>
 
 
+    <color name="insideDecoration_test3_toolbar">#273b09</color>
+    <color name="insideDecoration_test3_background">#8b9e2d</color>
+    <color name="insideDecoration_test3_systemBar">#f9eab8</color>
+    <color name="insideDecoration_test3_voteOption">#54442b</color>
 
 
-  <!--以下為商店頁面使用-->
-  <color name="colorBeachGreen">#96CEB4</color>
-  <color name="colorBeachGreenDark">#588C7E</color>
-  <color name="colorBeachYellow">#FFEEAD</color>
-  <color name="colorBeachRed">#FF6F69</color>
-  <color name="colorBeachOrange">#FFCC5C</color>
+    <!--以下為商店頁面使用-->
+    <color name="colorBeachGreen">#96CEB4</color>
+    <color name="colorBeachGreenDark">#588C7E</color>
+    <color name="colorBeachYellow">#FFEEAD</color>
+    <color name="colorBeachRed">#FF6F69</color>
+    <color name="colorBeachOrange">#FFCC5C</color>
 </resources>

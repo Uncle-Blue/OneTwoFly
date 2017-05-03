@@ -36,6 +36,8 @@ dependencies {
     compile 'com.parse.bolts:bolts-applinks:1.4.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.github.clans:fab:1.6.4'
+    compile 'com.airbnb.android:lottie:2.0.0-beta4'
+
 
     // for DexIndexOverflowException problem
     compile 'com.android.support:multidex:1.0.0'

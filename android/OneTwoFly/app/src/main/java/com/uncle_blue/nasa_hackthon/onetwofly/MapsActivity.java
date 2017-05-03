@@ -1,30 +1,43 @@
 package com.uncle_blue.nasa_hackthon.onetwofly;
 
-import android.*;
 import android.Manifest.permission;
-import android.content.DialogInterface;
+import android.animation.Animator;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
@@ -33,27 +46,43 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.uncle_blue.nasa_hackthon.onetwofly.model.Airport;
+import com.uncle_blue.nasa_hackthon.onetwofly.model.AqiStation;
 import com.uncle_blue.nasa_hackthon.onetwofly.util.network.OtfApiHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 import bolts.Continuation;
 import bolts.Task;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.Response;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private LottieAnimationView mStartPageAnimView, loading_LAV;
     private GoogleMap mMap;
     private Toolbar toolbar;    //頂部按鈕條
     private DrawerLayout drawerLayout;  //左側選單
+    private NavigationView navigationView;
     private FloatingActionMenu fam; //漂浮按鈕選單
+    private LinearLayout loadingPage, inputPage;
+    private View infoInputView;
+    private PopupWindow infoInputPopupWindow;   // PopupWindow for adding some info to send to server
+    private int height_44dp, height_32dp;
+    private int width_44dp,  width_32dp;
+    private BitmapDrawable bD_aqi_best, bD_aqi_better, bD_aqi_worse, bD_aqi_worst, bD_aqi_unknown, bD_airport_tower, bD_arrive;
+    private Bitmap bM_aqi_best, bM_aqi_better, bM_aqi_worse, bM_aqi_worst, bM_aqi_unknown, bM_airport_tower, bM_arrive;
 
     private final String[] LOCATION_PERMS = {android.Manifest.permission.ACCESS_FINE_LOCATION};
     private final int INITIAL_REQUEST = 1337;
@@ -64,6 +93,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng myCurrentLatLng = defultLatLng_Taiwan;
     private GoogleApiClient myGoogleApiClient;
     private boolean gMapFirstStart = true;
+    private int cameraHeight_aqi = AQI_LOCAL;
+    private final static int AQI_LOCAL = 12;
+    private final static int AQI_GLOBAL = 4;
+
+    private final static int STATE_FRIGHT = 666;
+    private final static int STATE_AQI_STATION = 667;
+    private int currentState = STATE_FRIGHT;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +116,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initView() {
+        height_44dp = (int)convertDpToPixel(44, this);
+        width_44dp = (int)convertDpToPixel(44, this);
+        height_32dp = (int)convertDpToPixel(32, this);
+        width_32dp = (int)convertDpToPixel(32, this);
+
+        bD_aqi_best =(BitmapDrawable)getResources().getDrawable(R.drawable.aqi_best, getTheme());
+        bD_aqi_better =(BitmapDrawable)getResources().getDrawable(R.drawable.aqi_better, getTheme());
+        bD_aqi_worse =(BitmapDrawable)getResources().getDrawable(R.drawable.aqi_worse, getTheme());
+        bD_aqi_worst =(BitmapDrawable)getResources().getDrawable(R.drawable.aqi_worst, getTheme());
+        bD_aqi_unknown =(BitmapDrawable)getResources().getDrawable(R.drawable.aqi_unknow, getTheme());
+        bD_airport_tower =(BitmapDrawable)getResources().getDrawable(R.drawable.airport_tower, getTheme());
+        bD_arrive =(BitmapDrawable)getResources().getDrawable(R.drawable.arrival, getTheme());
+
+        bM_aqi_best = Bitmap.createScaledBitmap(bD_aqi_best.getBitmap(), width_32dp, height_32dp, false);
+        bM_aqi_better = Bitmap.createScaledBitmap(bD_aqi_better.getBitmap(), width_32dp, height_32dp, false);
+        bM_aqi_worse = Bitmap.createScaledBitmap(bD_aqi_worse.getBitmap(), width_32dp, height_32dp, false);
+        bM_aqi_worst = Bitmap.createScaledBitmap(bD_aqi_worst.getBitmap(), width_32dp, height_32dp, false);
+        bM_aqi_unknown = Bitmap.createScaledBitmap(bD_aqi_unknown.getBitmap(), width_32dp, height_32dp, false);
+        bM_airport_tower = Bitmap.createScaledBitmap(bD_airport_tower.getBitmap(), width_44dp, width_44dp, false);
+        bM_arrive = Bitmap.createScaledBitmap(bD_arrive.getBitmap(), width_44dp, width_44dp, false);
+
         initToolbar();
         initDrawerLayout();
         initFloatingActionStuff();
+        initInfoInputPopupWindow();
     }
 
 
@@ -93,12 +152,42 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //      toolbar.setTitleMarginStart(250);
         // toolbar.setSubtitle("可以有副標喔~~");
         // toolbar.setLogo(R.drawable.ic_account_balance_black_24dp);
-        toolbar.setNavigationIcon(R.drawable.ic_list_black_24dp);
+        BitmapDrawable bD = (BitmapDrawable)getResources().getDrawable(R.drawable.ic_list_black_24dp, getTheme());
+        Bitmap b = Bitmap.createScaledBitmap(bD.getBitmap(), width_44dp, width_44dp, false);
+        toolbar.setNavigationIcon(new BitmapDrawable(getResources(), b));
     }
 
     private void initDrawerLayout() {
         //初始化左側選單與內容
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+
+        mStartPageAnimView = (LottieAnimationView) findViewById(R.id.start_page_LAV);
+        mStartPageAnimView.setSpeed(1.2f);
+        mStartPageAnimView.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(mMap !=null) {
+                    drawerLayout.setVisibility(View.VISIBLE);
+                }
+            }
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+        mStartPageAnimView.playAnimation();
+
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");;
+        //取得當前手機系統時間
+        Date currentDate = new Date(System.currentTimeMillis());
+        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.titleTV)).setText(dateFormat.format(currentDate));
+
     }
 
     private void initFloatingActionStuff() {
@@ -110,7 +199,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fam.setOnMenuButtonClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "menu open!", Toast.LENGTH_SHORT).show();
                 fam.toggle(fam.isAnimated());
                 fam.requestFocus();
             }
@@ -119,56 +207,214 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         fab1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = "{'message':'On click button's id is " + v.getId() + "'}";
-                sendToServer(OtfApiHelper.OTF_SERVER, message);
+                cameraHeight_aqi = AQI_LOCAL;
+                String message = "{'token': 'demo'," +
+                        "'keyword': 'bangalore'}";
+                String url = "https://api.waqi.info/map/bounds/?";
 
-                Toast.makeText(MapsActivity.this, "fab1 click!", Toast.LENGTH_SHORT).show();
+                myCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
+                url = new StringBuffer(url)
+                        .append("latlng=" + String.valueOf(myCurrentLocation.getLatitude() - 0.5))
+                        .append("," + String.valueOf(myCurrentLocation.getLongitude() - 0.5))
+                        .append("," + String.valueOf(myCurrentLocation.getLatitude() + 0.5))
+                        .append("," + String.valueOf(myCurrentLocation.getLongitude() + 0.5))
+                        .append("&token=4b33edc080ac635bd7259d9d5f9a1a9d8fa465c4")
+                        .toString();
+
+                showLoadingPage();
+                sendGetRequest(url, OtfApiHelper.TYPE_AQI_STATION);
+//                String message = "{'message':'On click button's id is " + v.getId() + "'}";
+//                sendGetRequest(OtfApiHelper.OTF_SERVER, message);
+
                 fam.close(fam.isAnimated());
             }
         });
         fab2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MapsActivity.this, "fab2 click!", Toast.LENGTH_SHORT).show();
+                cameraHeight_aqi = AQI_GLOBAL;
+                String url = "https://api.waqi.info/map/bounds/?latlng=-90,-180,90,180&token=4b33edc080ac635bd7259d9d5f9a1a9d8fa465c4";
+                showLoadingPage();
+                sendGetRequest(url, OtfApiHelper.TYPE_AQI_STATION);
+
                 fam.close(fam.isAnimated());
             }
         });
         fab3.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-                builder.setTitle("Your Flight");
-                builder.setMessage("Please input the flight number below.");
+                infoInputPopupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
 
-                // Set up the input
-                final EditText input = new EditText(MapsActivity.this);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                builder.setView(input);
-
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String m_Text = input.getText().toString();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-
-                Toast.makeText(MapsActivity.this, "fab3 click!", Toast.LENGTH_SHORT).show();
                 fam.close(fam.isAnimated());
             }
         });
     }
 
-    private Task<Void> sendToServer(final String url, final String message){
+    private void initInfoInputPopupWindow(){
+        infoInputView = getLayoutInflater().inflate(R.layout.popup_window_info_input, null);
+        inputPage = (LinearLayout) infoInputView.findViewById(R.id.inputPage);
+        loadingPage = (LinearLayout) infoInputView.findViewById(R.id.loadingPage);
+        loading_LAV = (LottieAnimationView) infoInputView.findViewById(R.id.loading_LAV);
+
+        final EditText editText = ((EditText) infoInputView.findViewById(R.id.pW_flightNumET));
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        editText.setFocusableInTouchMode(true);
+        editText.setFocusable(true);
+        editText.clearFocus();
+        ((Button) infoInputView.findViewById(R.id.pW_cancelBtn)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoInputPopupWindow.dismiss();
+            }
+        });
+        ((Button) infoInputView.findViewById(R.id.pW_SubmitBtn)).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingPage();
+                String flightNumber = editText.getText().toString().trim();
+//                editText.setText("");
+                String parameter = "{'flight':'" + flightNumber + "'}";
+//                        String url = "http://140.115.202.15/OneTwoFly/web/OneTwoFly/public/";
+                String url = "http://140.115.202.15/OneTwoFly/web/OneTwoFly/public/flight?flight=";
+                sendGetRequest(url + flightNumber, OtfApiHelper.TYPE_FLIGHT).continueWith(new Continuation<Void, Void>() {
+                    @Override
+                    public Void then(Task<Void> task) throws Exception {
+                        hideLoadingPage();
+                        return null;
+                    }
+                },Task.UI_THREAD_EXECUTOR);
+//                        sendPostRequest(url,parameter);
+
+//                        float latitude, longtitude;
+//                        latitude = Float.parseFloat(inputText.split(",")[0]);
+//                        longtitude = Float.parseFloat(inputText.split(",")[1]);
+//                        String url = OtfApiHelper.getAqiStationRequestUrl(latitude, longtitude);
+//                        sendGetRequest(url, "hihi");
+            }
+        });
+
+        //最後一個參數false表示沒有取得焦點
+        infoInputPopupWindow = new PopupWindow(infoInputView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        infoInputPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        infoInputPopupWindow.setTouchable(true);
+        infoInputPopupWindow.update();
+
+    }
+
+    private boolean addAirportMarker(Airport airport){
+        if(airport != null){
+            mMap.clear();
+            String airportMessage = "Lng. : " + airport.getLongitude()
+                    + "\nLat. : " + airport.getLatitude()
+                    + "\nLocal RH : " + airport.getHumidity() + "%"
+                    + "\nLocal Temp. : " + airport.getTemperature() + " 'C";
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(airport.getLatitude(), airport.getLongitude()))
+                    .title(String.valueOf(airport.getAirportName()))
+                    .icon(BitmapDescriptorFactory.fromBitmap(bM_arrive))
+                    .snippet(String.valueOf(airportMessage))
+            ).showInfoWindow();
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(airport.getLatitude(), airport.getLongitude()), 16), 1500, null);
+        }
+
+        return false;
+    }
+
+    private boolean addAqiMarkers(ArrayList<AqiStation> aqiStations){
+        if(aqiStations != null && aqiStations.size() > 0){
+            mMap.clear();
+            for( AqiStation aqiStation : aqiStations) {
+                final Bitmap aqiIcon;
+                final int aqi = aqiStation.getAqi();
+                aqiIcon = decideAqiIcon(aqi);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(aqiStation.getLatitude(), aqiStation.getLongitude()))
+                        .title(String.valueOf(aqiStation.getUid()))
+                        .icon(BitmapDescriptorFactory.fromBitmap(aqiIcon))
+                        .snippet(String.valueOf(aqi))
+                );
+            }
+            myCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
+            myCurrentLatLng = new LatLng(myCurrentLocation.getLatitude(), myCurrentLocation.getLongitude());
+
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLatLng, cameraHeight_aqi), 1500, null);
+            return true;
+        }
+
+        return false;
+    }
+
+    private Bitmap decideAqiIcon(int aqi){
+        final Bitmap aqiIcon;
+
+        if (aqi >= 0 && aqi < 75) {
+            aqiIcon = bM_aqi_best;
+        } else if (aqi >= 75 && aqi < 150) {
+            aqiIcon = bM_aqi_better;
+        } else if (aqi >= 150 && aqi < 225) {
+            aqiIcon = bM_aqi_worse;
+        } else if (aqi >= 225) {
+            aqiIcon = bM_aqi_worst;
+        } else {
+            aqiIcon = bM_aqi_unknown;
+        }
+
+        return aqiIcon;
+    }
+
+    private Task<Void> sendGetRequest(final String url, final int type){
+        return Task.callInBackground(new Callable<Response>() {
+            @Override
+            public Response call() throws Exception {
+                return OtfApiHelper.GET(url);
+            }
+        }).continueWith(new Continuation<Response, Void>() {
+            @Override
+            public Void then(Task<Response> task) throws Exception {
+                if(task.isFaulted() || task.isCancelled()){
+                    return null;
+                }
+
+                if(task.getResult() != null){
+                    hideLoadingPage();
+                    String resultBody = null;
+                    try {
+                        resultBody = task.getResult().body().string();
+                    }catch (Exception e){
+                        if(task.getResult().code() == 500){
+                            Toast.makeText(MapsActivity.this, "Please check your flight number.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(MapsActivity.this, "Oops! something error...", Toast.LENGTH_SHORT).show();
+                        }
+                        return null;
+                    }
+                    switch (type){
+                        case OtfApiHelper.TYPE_FLIGHT :
+                            currentState = STATE_FRIGHT;
+
+                            Airport airport
+                                    = OtfApiHelper.parseAirportJsonData(resultBody);
+                            addAirportMarker(airport);
+                            break;
+                        case OtfApiHelper.TYPE_AQI_STATION :
+                            currentState = STATE_AQI_STATION;
+
+                            ArrayList<AqiStation> aqiStations
+                                    = OtfApiHelper.parseAqiStationJsonData(resultBody);
+                            addAqiMarkers(aqiStations);
+                            break;
+                    }
+                }
+                infoInputPopupWindow.dismiss();
+                return null;
+            }
+        }, Task.UI_THREAD_EXECUTOR);
+    }
+
+    private Task<Void> sendPostRequest(final String url, final String message){
         return Task.callInBackground(new Callable<Response>() {
             @Override
             public Response call() throws Exception {
@@ -178,19 +424,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public Void then(Task<Response> task) throws Exception {
                 if(task.isFaulted() || task.isCancelled()){
-                    Toast.makeText(MapsActivity.this,
-                            "Error code: " + String.valueOf(task.getResult().code())
-                                    + "\n" + task.getError().getMessage(), Toast.LENGTH_SHORT).show();
                     return null;
                 }
-                fam.open(fam.isAnimated());
-                Toast.makeText(MapsActivity.this, task.getResult().message(), Toast.LENGTH_SHORT).show();
+
+                if(task.getResult() != null){
+                    ArrayList<AqiStation> aqiStations
+                            = OtfApiHelper.parseAqiStationJsonData(task.getResult().body().string());
+                    addAqiMarkers(aqiStations);
+                }
                 return null;
             }
         }, Task.UI_THREAD_EXECUTOR);
     }
 
+    private void showLoadingPage(){
+        loadingPage.setVisibility(View.VISIBLE);
+        inputPage.setVisibility(View.INVISIBLE);
 
+        loading_LAV.playAnimation();
+    }
+
+    private void hideLoadingPage(){
+        loadingPage.setVisibility(View.INVISIBLE);
+        inputPage.setVisibility(View.VISIBLE);
+
+        if(loading_LAV.isAnimating()) {
+            loading_LAV.cancelAnimation();
+        }
+    }
 
     /////////////////////////////////////////////////////////
     //----------------- library framework -----------------//
@@ -228,6 +489,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        if(!mStartPageAnimView.isAnimating()) {
+            drawerLayout.setVisibility(View.VISIBLE);
+        }
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -238,6 +502,46 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             mMap.getUiSettings().setCompassEnabled(true);
             mMap.setMyLocationEnabled(true);
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    marker.showInfoWindow();
+
+                    return false;//false則除了執行自訂的行為外，還會執行預設的事件(顯示資訊視窗、移動鏡頭)
+                }
+            });
+
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                @Override
+                public View getInfoWindow(Marker marker) {
+                    return null;
+                }
+
+                @Override
+                public View getInfoContents(Marker marker) {
+                    View view = getLayoutInflater().inflate(R.layout.gm_info_window_layout, null);
+                    CircleImageView infoWindowCIV = (CircleImageView) view.findViewById(R.id.infoWindowCIV);
+                    TextView titleTv = (TextView) view.findViewById(R.id.titleTV);
+                    TextView contentTV= (TextView) view.findViewById(R.id.contentTV);
+                    if(currentState == STATE_AQI_STATION){
+                        Bitmap aqiIcon = decideAqiIcon(Integer.parseInt(marker.getSnippet()));
+                        infoWindowCIV.setImageBitmap(aqiIcon);
+
+                        titleTv.setText("Station " + marker.getTitle());
+                        if("-1".equals(marker.getSnippet())) {
+                            contentTV.setText("Losing index :(");
+                        }else {
+                            contentTV.setText("AQI index : " + marker.getSnippet());
+                        }
+                    } else if (currentState == STATE_FRIGHT){
+                        infoWindowCIV.setImageBitmap(bM_airport_tower);
+
+                        titleTv.setText("Dest. >>" + marker.getTitle());
+                        contentTV.setText(marker.getSnippet());
+                    }
+                    return view;
+                }
+            });
         }
         myGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -261,11 +565,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         myCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
         if (gMapFirstStart) {
             if (myCurrentLocation == null) {
-                Toast.makeText(this, "無法取得目前所在位置", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Can't get the local Lng. and Lat.", Toast.LENGTH_SHORT).show();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defultLatLng_Taiwan, 6));
             } else if (gMapFirstStart) {
                 myCurrentLatLng = new LatLng(myCurrentLocation.getLatitude(), myCurrentLocation.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLatLng, 16));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLatLng, 16), 1500, null);
                 gMapFirstStart = false;
             }
         }
@@ -290,14 +594,46 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (mMap != null) {
                         mMap.getUiSettings().setCompassEnabled(true);
                         mMap.setMyLocationEnabled(true);
+                        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                            @Override
+                            public boolean onMarkerClick(Marker marker) {
+                                marker.showInfoWindow();
+
+                                return true;//false則除了執行自訂的行為外，還會執行預設的事件(顯示資訊視窗、移動鏡頭)
+                            }
+                        });
+
+                        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                            @Override
+                            public View getInfoWindow(Marker marker) {
+                                return null;
+                            }
+
+                            @Override
+                            public View getInfoContents(Marker marker) {
+                                View view = getLayoutInflater().inflate(R.layout.gm_info_window_layout, null);
+                                CircleImageView infoWindowCIV = (CircleImageView) view.findViewById(R.id.infoWindowCIV);
+                                TextView titleTv = (TextView) view.findViewById(R.id.titleTV);
+                                TextView contentTV= (TextView) view.findViewById(R.id.contentTV);
+                                if(currentState == STATE_AQI_STATION){
+                                    Bitmap aqiIcon = decideAqiIcon(Integer.parseInt(marker.getSnippet()));
+                                    Drawable aqiBitmapDrawable = new BitmapDrawable(getResources(), aqiIcon);
+                                    infoWindowCIV.setImageBitmap(aqiIcon);
+                                }
+                                titleTv.setText(marker.getTitle());
+                                contentTV.setText(marker.getSnippet());
+                                return view;
+                            }
+                        });
+
                         myCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
                         if (gMapFirstStart) {
                             if (myCurrentLocation == null) {
-                                Toast.makeText(this, "無法取得目前所在位置", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "Can't get the local Lng. and Lat.", Toast.LENGTH_SHORT).show();
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defultLatLng_Taiwan, 6));
                             } else if (gMapFirstStart) {
                                 myCurrentLatLng = new LatLng(myCurrentLocation.getLatitude(), myCurrentLocation.getLongitude());
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLatLng, 16));
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myCurrentLatLng, 16), 1500, null);
                                 gMapFirstStart = false;
                             }
                         }
@@ -306,7 +642,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Log.d("MapsActivity:", "permission denied");
-                    Toast.makeText(this, "無法取得權限，請重新啟動！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permission deny! \n Application turn off.", Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 return;
@@ -324,5 +660,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
         }
         return super.dispatchTouchEvent(e);
+    }
+
+
+    /**
+     * Covert dp to px
+     * @param dp
+     * @param context
+     * @return pixel
+     */
+    public static float convertDpToPixel(float dp, Context context){
+        float px = dp * getDensity(context);
+        return px;
+    }
+
+    /**
+     * Covert px to dp
+     * @param px
+     * @param context
+     * @return dp
+     */
+    public static float convertPixelToDp(float px, Context context){
+        float dp = px / getDensity(context);
+        return dp;
+    }
+    /**
+     * 取得螢幕密度
+     * 120dpi = 0.75
+     * 160dpi = 1 (default)
+     * 240dpi = 1.5
+     * @param context
+     * @return
+     */
+    public static float getDensity(Context context){
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return metrics.density;
     }
 }
