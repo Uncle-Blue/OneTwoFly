@@ -19,10 +19,12 @@ Route::get('/php', function () {
     return phpinfo();
 });
 
+Route::get('/co2', 'predictionController@view');
+
 Route::get('/flight', 'crawlController@flight');
 
 Route::get('/weather', 'crawlController@weather');
 
 Route::get('/predict', 'predictionController@gg');
 
-Route::get('/dummy', 'predictionController@execLocalScript');
+Route::get('/dummy', ['as' =>'predict', 'uses' => 'predictionController@execLocalScript']);

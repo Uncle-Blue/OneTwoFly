@@ -47,14 +47,19 @@ class predictionController extends Controller
         $res = $client->request('POST', 'http://127.0.0.1/OneTwoFly/web/OneTwoFly/public/dummy',
         ['body' => 'ff']);
         echo $res->getStatusCode(); // 200
-        echo $res->getBody(); // 
+        echo $res->getBody(); //
     }
 
     public function execLocalScript(){
 
-        $output = exec("python C:\\xampp\\htdocs\\OneTwoFly\\web\\OneTwoFly\\app\\dummy.py");
+        $output = exec("python ".env('dummy_path'));
 
-        echo($output);
+        //echo($output);
+        return($output);
+    }
+
+    public function view($value='2017') {
+        return view('predict');
     }
 
 }
