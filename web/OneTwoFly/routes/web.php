@@ -22,3 +22,7 @@ Route::get('/php', function () {
 Route::get('/flight', 'crawlController@flight');
 
 Route::get('/weather', 'crawlController@weather');
+
+Route::get('/predict', 'predictionController@gg');
+
+Route::get('/dummy', 'predictionController@execLocalScript');
